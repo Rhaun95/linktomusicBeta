@@ -23,10 +23,17 @@ targetCompatibility = '21'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
 
 application {
-    mainModule = 'linktomusicbeta'
-    mainClass = 'linktomusicbeta.gui.HelloApplication'
+    mainModule = 'org.example.linktomusicbeta'
+    mainClass = 'org.example.linktomusicbeta.Main'
 }
 
 javafx {
@@ -35,6 +42,8 @@ javafx {
 }
 
 dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

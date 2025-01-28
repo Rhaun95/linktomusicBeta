@@ -2,15 +2,16 @@ module linktomusicbeta {
 
     requires javafx.controls;
     requires javafx.fxml;
-
     requires transitive javafx.graphics;
+    requires ch.qos.logback.classic;
+    requires org.slf4j;
 
-    opens linktomusicbeta.controller to javafx.fxml;
+    opens org.example.linktomusicbeta to javafx.fxml;
+    opens org.example.linktomusicbeta.controller to javafx.fxml;
 
 //    opens linktomusicbeta.model;
+    exports org.example.linktomusicbeta;
+    exports org.example.linktomusicbeta.controller to javafx.fxml;
 
-    exports linktomusicbeta.controller to javafx.fxml;
-    exports linktomusicbeta.gui;
-//    opens linktomusicbeta.model.god;
 
 }
