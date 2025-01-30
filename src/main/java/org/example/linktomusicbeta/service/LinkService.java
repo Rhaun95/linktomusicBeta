@@ -17,7 +17,7 @@ public class LinkService {
                 "yt-dlp",
                 "-x",
                 "--audio-format", "aac",
-                "--audio-quality", "320",
+                "--audio-quality", "190",
                 "--no-mtime",
                 "-o",downloadLocation,
                 link

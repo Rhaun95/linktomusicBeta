@@ -1,28 +1,35 @@
 package org.example.linktomusicbeta.controller;
 
-import ch.qos.logback.classic.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import org.example.linktomusicbeta.service.LinkService;
-import org.slf4j.LoggerFactory;
-
+import javafx.scene.control.ListView;
+import org.example.linktomusicbeta.model.Music;
+import org.example.linktomusicbeta.component.MusicCell;
+/*
+* TODO: 
+*  Music List -> click + -> open convert tab to add
+*  Musicplayer?
+*  save/track Music
+* */
 public class HomeController {
 
-    private final LinkService linkService = new LinkService();
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(HomeController.class);
-
     @FXML
-    private TextField linkField;
+    private ListView<Music> musicListView;
 
-    @FXML
-    protected void handleLinkSubmit() {
-        String link = linkField.getText();
+    /*TODO:
+       - initialize with already exists music data
+     */
+    public void initialize() {
+        ObservableList<Music> musicList = FXCollections.observableArrayList(
+                new Music("groovebox.png","제목1", "가수 1"),
+                new Music("hot-air-balloon.png","제목2", "가수 2"),
+                new Music("tool.jpg","제목3", "가수 3")
+        );
 
-        if(link ==null || link.isEmpty()){
-            logger.warn("Please enter a valid link");
-            return;
-        }
-        linkService.convertLinkToMusic(link);
+        musicListView.setItems(musicList);
+        musicListView.setCellFactory(param -> new MusicCell());
+
     }
 
 }

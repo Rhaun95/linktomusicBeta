@@ -9,9 +9,9 @@ module linktomusicbeta {
     opens org.example.linktomusicbeta to javafx.fxml;
     opens org.example.linktomusicbeta.controller to javafx.fxml;
 
-//    opens linktomusicbeta.model;
     exports org.example.linktomusicbeta;
     exports org.example.linktomusicbeta.controller to javafx.fxml;
+
 
 
 }
