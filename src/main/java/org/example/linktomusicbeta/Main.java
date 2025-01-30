@@ -18,7 +18,7 @@ public class Main extends Application {
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(
                     getClass().getResource("/org/example/linktomusicbeta/fxml/home.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 540);
+            Scene scene = new Scene(fxmlLoader.load(), 300, 420);
 
             stage.setTitle("LinkToMusic");
             stage.setScene(scene);
