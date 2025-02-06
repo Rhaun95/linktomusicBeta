@@ -1,1 +1,2 @@
-j
+- automated build and test
+- terraform?

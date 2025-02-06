@@ -11,4 +11,5 @@
    <TextField fx:id="linkField" promptText="Enter the link to convert..."  />
 
     <Button onAction="#handleLinkSubmit" text="Convert" />
+    <Button onAction="#changeScene" text="toMyMusic" />
 </VBox>
