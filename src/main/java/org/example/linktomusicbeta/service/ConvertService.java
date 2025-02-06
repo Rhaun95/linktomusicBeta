@@ -4,21 +4,24 @@ import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class LinkService {
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(LinkService.class);
+public class ConvertService {
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(ConvertService.class);
 
     public void convertLinkToMusic(String link) {
-        String downloadLocation  = System.getProperty("user.home") + "/Downloads/%(title)s.%(ext)s";
+        String downloadLocation  = System.getProperty("user.home")+ File.separator+ "Music/%(title)s.%(ext)s";
         
         String[] command = {
                 "yt-dlp",
                 "-x",
-                "--audio-format", "aac",
+                "--audio-format", "mp3",
                 "--audio-quality", "190",
                 "--no-mtime",
+                "--embed-metadata",
+                "--embed-thumbnail",
                 "-o",downloadLocation,
                 link
         };
@@ -30,7 +33,6 @@ public class LinkService {
             printProcessOutput(process);
 
             int exitCode = process.waitFor();
-
             if(exitCode != 0) {
                 logger.error("Converting failed! Code: " + exitCode);
                 return;

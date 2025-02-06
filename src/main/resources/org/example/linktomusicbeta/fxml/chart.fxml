@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Label?>
+<VBox fx:id="chartView" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.linktomusicbeta.controller.ChartController">
+
+    <BorderPane fx:id="headerView">
+      <center>
+            <Button fx:id="toConvertBtn" text="️⚙️" BorderPane.alignment="CENTER">+
+                <BorderPane.margin>
+                    <Insets bottom="5" left="5" right="15" top="5" />
+                </BorderPane.margin>
+            </Button>
+      </center>
+    </BorderPane>
+
+    <ListView fx:id="musicListView"> </ListView>
+    <TabPane tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Chart">
+            <VBox alignment="CENTER">
+                <Label text="🎵 Chart Page"/>
+            </VBox>
+        </Tab>
+        <Tab text="My">
+            <VBox alignment="CENTER">
+                <Label text="❤️ My Music"/>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

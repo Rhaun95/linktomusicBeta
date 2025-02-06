@@ -1,15 +1,26 @@
 package org.example.linktomusicbeta.model;
 
+import javafx.scene.image.Image;
+
 public class Music {
 
     private String title;
     private String artist;
-    private String imagePath;
+    private Image image;
+    private String url;
 
-    public Music(String imagePath, String title, String artist) {
-        this.imagePath = imagePath;
+    public Music(Image image, String title, String artist, String url) {
+        this.image = image;
         this.title = title;
         this.artist = artist;
+        this.url = url;
+    }
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getArtist() {
@@ -20,15 +31,15 @@ public class Music {
         this.artist = artist;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public Image getImagePath() {
+        return image;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImagePath(Image image) {
+        this.image = image;
     }
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
