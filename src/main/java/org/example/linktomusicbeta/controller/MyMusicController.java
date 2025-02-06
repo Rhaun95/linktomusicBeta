@@ -14,7 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import org.example.linktomusicbeta.component.MyMusicCell;
 import org.example.linktomusicbeta.model.Music;
@@ -32,15 +35,19 @@ public class MyMusicController {
     private Stage primaryStage;
 
     public void setPrimaryStage(Stage stage) {
-        logger.info("Primary stage set: " + stage);
         this.primaryStage = stage;
     }
     @FXML private ListView<Music>  musicListView;
     @FXML private Button toConvert;
+    @FXML private Button playPauseButton, stopButton, closeButton;
+    @FXML private HBox musicPlayerContainer;
+    private boolean isPlaying = false;
 
+    /*
+     * TODO:
+     *  move to other pages, mediaPlayer stil playing but disaapered
+     * */
     public void initialize() throws InvalidDataException, UnsupportedTagException, IOException {
-        logger.info("Primary stage is set: " + primaryStage);
-
 
         String musicDirectory = System.getProperty("user.home")+ File.separator+ "Music";
         logger.info(musicDirectory);
@@ -62,9 +69,6 @@ public class MyMusicController {
 
         ObservableList<Music> musicList = FXCollections.observableArrayList(musicFiles);
         musicListView.setItems(musicList);
-        musicListView.getItems().forEach(music -> {
-            logger.info("ListView 내용 확인 -> 제목: " + music.getTitle() + ", 아티스트: " + music.getArtist());
-        });
         musicListView.setCellFactory(param -> new MyMusicCell());
 
         musicListView.setOnMouseClicked(event -> {
@@ -75,47 +79,28 @@ public class MyMusicController {
                 }
             }
         });
-
     }
 
     public Music extractMetadata(File track) throws InvalidDataException, UnsupportedTagException, IOException {
 
         Mp3File mp3File = new Mp3File(track);
-        ID3v2 tag = mp3File.getId3v2Tag();
-
-        if (tag == null) {
-          return null;
+        if (!mp3File.hasId3v2Tag()) {
+            return null;
         }
-
-
-//            if (mp3File.hasId3v2Tag()) {
-//                ID3v2 id3v2Tag = mp3File.getId3v2Tag();
-//                logger.info("파일: " + track.getName());
-//                logger.info("제목: " + id3v2Tag.getTitle());
-//                logger.info("아티스트: " + id3v2Tag.getArtist());
-//                logger.info("앨범: " + id3v2Tag.getAlbum());
-//                logger.info("장르: " + id3v2Tag.getGenreDescription());
-//                logger.info("커버 이미지 존재 여부: " + (id3v2Tag.getAlbumImage() != null));
-//                logger.info("==================================");
-//            } else {
-//                logger.info("ID3v2 태그가 없는 파일: " + track.getName());
-//            }
-
-
+        ID3v2 tag = mp3File.getId3v2Tag();
         String title = tag.getTitle();
         String artist = tag.getArtist();
         String album = tag.getAlbum();
         String genre = tag.getGenreDescription();
-        byte[] imageData = tag.getAlbumImage();
-        // 앨범 이미지 추출 (APIC 프레임)
         Image albumImageData = null;
 
-        if (imageData != null) {
+        if (tag.getAlbumImage() != null) {
+            byte[] imageData = tag.getAlbumImage();
             albumImageData = new Image(new ByteArrayInputStream(imageData));
         }
-
-        return new Music(albumImageData,title, artist, track.getPath());
+        return new Music(albumImageData,title, artist, track.toURI().toString());
     }
+
     @FXML
     public void changeToConvert() {
         try {
@@ -132,39 +117,51 @@ public class MyMusicController {
             logger.info(e.getMessage());
         }
     }
-//    public List<Music> loadMusicFiles(String path) throws InvalidDataException, UnsupportedTagException, IOException {
-//        File folder = new File(path);
-//        List<Music> musicFiles = new ArrayList<Music>();
-//
-//        if(folder.exists() && folder.isDirectory()) {
-//            System.out.println("폴더 경로: " + path);
-//            for(File file : Objects.requireNonNull(folder.listFiles())) {
-////                if (file.isFile() && (file.getName().endsWith(".mp3") || file.getName().endsWith(".aac"))) {
-//                if (file.isFile()&& !file.getName().equalsIgnoreCase("desktop.ini")
-//                        && (file.getName().endsWith(".mp3") || file.getName().endsWith(".aac"))) {
-//                    System.out.println("파일 경로: " + file.getAbsolutePath());
-//                    musicFiles.add( extractMetadata(file));
-//                }
-//            }
-//        }
-//        return musicFiles;
-//    }
+
     private void openMusicPlayer(Music music) {
+
+        logger.info("selected Music: {} - {}", music.getTitle(), music.getArtist());
+
+        playMusic(music);
+
+
+    }
+
+    @FXML
+    private void togglePlayPause() {
+        if (mediaPlayer == null) return;
+
+        if (isPlaying) {
+            mediaPlayer.pause();
+            playPauseButton.setText("▶");
+        } else {
+            mediaPlayer.play();
+            playPauseButton.setText("⏸");
+        }
+        isPlaying = !isPlaying;
+    }
+
+    @FXML
+    private void stopMusic() {
+        mediaPlayer.stop();
+        musicPlayerContainer.setVisible(false);
+    }
+
+    @FXML private MediaPlayer mediaPlayer;
+
+    public void playMusic(Music music) {
         try {
-            logger.info("selected Music: {} - {}", music.getTitle(), music.getArtist());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/linktomusicbeta/fxml/musicPlayer.fxml"));
-            Parent root = loader.load();
-            logger.info("New Tab opened");
+            String mediaSource = music.getUrl();
+            Media media = new Media(mediaSource);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+            musicPlayerContainer.setVisible(true);
+            isPlaying = true;
+            logger.info("music playing");
 
-            MusicPlayerController controller = loader.getController();
-            controller.setMusic(music);
-
-            Stage stage = new Stage() ;
-            stage.setScene(new Scene(root));
-            stage.setTitle("Music Player");
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            logger.info("music loading failed : Enter valid link");
         }
     }
+
 }

@@ -17,22 +17,19 @@ public class MusicPlayerController {
     @FXML private Button playButton, pauseButton, stopButton, closeButton;
     @FXML private MediaPlayer mediaPlayer;
 
-    public void setMusic(Music music) {
-        logger.info("Music set");
+    public void playMusic(Music music) {
+        if (music == null) {
+          return;
+        }
+        try {
+            String mediaSource = music.getUrl();
+            Media media = new Media(mediaSource);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+            logger.info("music playing");
 
-        if (music != null) {
-            logger.info("current music link: {}", music.getUrl());
-
-            try {
-                String mediaSource = music.getUrl(); // 인터넷 URL
-                Media media = new Media(mediaSource);
-                mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.play();
-                logger.info("music playing");
-
-            } catch (Exception e) {
-                logger.info("music loading failed : Enter valid link");
-            }
+        } catch (Exception e) {
+            logger.info("music loading failed : Enter valid link");
         }
     }
 

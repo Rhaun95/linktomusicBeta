@@ -47,30 +47,30 @@ public class ChartController {
             if (event.getClickCount() == 2) { // 더블 클릭 감지
                 Music selectedMusic = musicListView.getSelectionModel().getSelectedItem();
                 if (selectedMusic != null) {
-                    openMusicPlayer(selectedMusic);
+//                    openMusicPlayer(selectedMusic);
                 }
             }
         });
     }
 
 
-    private void openMusicPlayer(Music music) {
-        try {
-            logger.info("selected Music: {} - {}", music.getTitle(), music.getArtist());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/linktomusicbeta/fxml/musicPlayer.fxml"));
-            Parent root = loader.load();
-            logger.info("New Tab opened");
-
-            MusicPlayerController controller = loader.getController();
-            controller.setMusic(music);
-
-
-            Stage stage = new Stage() ;
-            stage.setScene(new Scene(root));
-            stage.setTitle("Music Player");
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private void openMusicPlayer(Music music) {
+//        try {
+//            logger.info("selected Music: {} - {}", music.getTitle(), music.getArtist());
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/linktomusicbeta/fxml/musicPlayer.fxml"));
+//            Parent root = loader.load();
+//            logger.info("New Tab opened");
+//
+//            MusicPlayerController controller = loader.getController();
+//            controller.setMusic(music);
+//
+//
+//            Stage stage = new Stage() ;
+//            stage.setScene(new Scene(root));
+//            stage.setTitle("Music Player");
+//            stage.show();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
