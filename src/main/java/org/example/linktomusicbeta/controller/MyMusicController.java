@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -29,6 +28,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+ * TODO:
+ *  move to other pages, mediaPlayer stil playing but disaapered
+ *  플레이어와 리스트 화면 겹치게
+ *  delete function
+ * */
 public class MyMusicController {
 
     public static final ch.qos.logback.classic.Logger logger = (Logger) LoggerFactory.getLogger(MyMusicController.class);
@@ -43,10 +49,7 @@ public class MyMusicController {
     @FXML private HBox musicPlayerContainer;
     private boolean isPlaying = false;
 
-    /*
-     * TODO:
-     *  move to other pages, mediaPlayer stil playing but disaapered
-     * */
+
     public void initialize() throws InvalidDataException, UnsupportedTagException, IOException {
 
         String musicDirectory = System.getProperty("user.home")+ File.separator+ "Music";
@@ -98,7 +101,9 @@ public class MyMusicController {
             byte[] imageData = tag.getAlbumImage();
             albumImageData = new Image(new ByteArrayInputStream(imageData));
         }
-        return new Music(albumImageData,title, artist, track.toURI().toString());
+        Music music = new Music(albumImageData,title, artist);
+        music.setUrl(track.toURI().toString());
+        return music;
     }
 
     @FXML
@@ -147,7 +152,7 @@ public class MyMusicController {
         musicPlayerContainer.setVisible(false);
     }
 
-    @FXML private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
 
     public void playMusic(Music music) {
         try {

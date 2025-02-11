@@ -11,7 +11,31 @@ import java.io.InputStreamReader;
 public class ConvertService {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(ConvertService.class);
 
-    public void convertLinkToMusic(String link) {
+    public static String getAudioStreamUrl(String link) throws IOException, InterruptedException {
+        String[] command = {
+                "yt-dlp",
+                "-f", "bestaudio",
+                "--get-url",
+                link
+        };
+
+        Process process = new ProcessBuilder(command).start();
+        logger.info("Fetching YouTube audio stream URL...");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String audioUrl = reader.readLine();  // 첫 번째 출력 줄이 오디오 URL
+
+        int exitCode = process.waitFor();
+        if (exitCode != 0 || audioUrl == null || audioUrl.isEmpty()) {
+            logger.error("Failed to retrieve audio URL! Exit Code: " + exitCode);
+            return null;
+        }
+
+        logger.info("Audio URL: " + audioUrl);
+        return audioUrl;
+    }
+
+    public static String convertLinkToMusic(String link) throws IOException, InterruptedException {
         String downloadLocation  = System.getProperty("user.home")+ File.separator+ "Music/%(title)s.%(ext)s";
         
         String[] command = {
@@ -26,31 +50,10 @@ public class ConvertService {
                 link
         };
 
-        try {
-            Process process = new ProcessBuilder(command).start();
-            logger.info("Converting Youtube to MP3");
+        Process process = new ProcessBuilder(command).start();
+        logger.info("Converting Youtube to MP3");
 
-            printProcessOutput(process);
 
-            int exitCode = process.waitFor();
-            if(exitCode != 0) {
-                logger.error("Converting failed! Code: " + exitCode);
-                return;
-            }
-            logger.info("Successfully converted!");
-        } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-    }
-
-    /**
-     * 프로세스의 표준 출력 및 표준 오류를 콘솔에 출력
-     *
-     * @param process 실행 중인 프로세스
-     * @throws IOException
-     */
-    private void printProcessOutput(Process process) throws IOException {
-        // 표준 출력 스트림 읽기
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -62,6 +65,26 @@ public class ConvertService {
         while ((line = errorReader.readLine()) != null) {
             System.err.println(line);  // 오류 메시지 콘솔에 출력
         }
+
+        int exitCode = process.waitFor();
+        if(exitCode != 0) {
+            logger.error("Converting failed! Code: " + exitCode);
+
+        }
+        logger.info("Successfully converted!");
+        return reader.readLine();
+
+    }
+
+    /**
+     * 프로세스의 표준 출력 및 표준 오류를 콘솔에 출력
+     *
+     * @param process 실행 중인 프로세스
+     * @throws IOException
+     */
+    private static void printProcessOutput(Process process) throws IOException {
+        // 표준 출력 스트림 읽기
+
     }
 
 }

@@ -28,7 +28,7 @@ public class ConvertController {
     }
 
     @FXML
-    protected void handleLinkSubmit() {
+    protected void handleLinkSubmit() throws IOException, InterruptedException {
         String link = linkField.getText();
 
         if(link ==null || link.isEmpty()){

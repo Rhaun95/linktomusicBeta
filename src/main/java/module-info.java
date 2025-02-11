@@ -10,6 +10,8 @@ module org.example.linktomusicbeta {
     requires org.json;
     requires jaudiotagger;
     requires mp3agic;
+    requires uk.co.caprica.vlcj;
+    requires jdk.httpserver;
 
 
     opens org.example.linktomusicbeta to javafx.fxml;

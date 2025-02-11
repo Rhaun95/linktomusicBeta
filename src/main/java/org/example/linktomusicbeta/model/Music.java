@@ -8,12 +8,12 @@ public class Music {
     private String artist;
     private Image image;
     private String url;
+    private String ytVideoID;
 
-    public Music(Image image, String title, String artist, String url) {
+    public Music(Image image, String title, String artist) {
         this.image = image;
         this.title = title;
         this.artist = artist;
-        this.url = url;
     }
     public String getUrl() {
         return url;
@@ -45,4 +45,14 @@ public class Music {
     public void setTitle(String title) {
         this.title = title;
     }
+    public String getYtVideoID() {
+        return ytVideoID;
+    }
+
+    public void setYtVideoID(String ytVideoID) {
+        this.ytVideoID = ytVideoID;
+    }
+
+
 }
+
