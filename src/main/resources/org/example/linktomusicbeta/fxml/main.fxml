@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="mainContainer" fx:controller="org.example.linktomusicbeta.controller.MainController">
+    <!-- 상단 버튼들 배치 -->
+    <top>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+            <Button fx:id="myMusicButton" text="My Music" onAction="#changeToMyMusic"/>
+            <Button fx:id="convertButton" text="Convert" onAction="#changeToConvert"/>
+            <Button fx:id="emptyButton" text="Empty"/>
+        </HBox>
+    </top>
+
+    <!-- 페이지 콘텐츠가 동적으로 로드될 공간 -->
+    <center>
+        <StackPane fx:id="contentArea">
+            <!-- 기본적으로 여기에 myMusic.fxml 또는 convert.fxml이 로드됨 -->
+        </StackPane>
+    </center>
+
+    <bottom>
+        <StackPane>
+            <fx:include source="musicPlayer.fxml" />
+        </StackPane>
+    </bottom>
+</BorderPane>

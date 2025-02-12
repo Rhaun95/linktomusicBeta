@@ -1,28 +1,19 @@
 package org.example.linktomusicbeta.component;
 
 import ch.qos.logback.classic.Logger;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-//import org.example.linktomusicbeta.controller.MusicPlayerController;
-import org.example.linktomusicbeta.controller.MusicPlayerController;
 import org.example.linktomusicbeta.model.Music;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,7 +60,7 @@ public class MusicCell extends ListCell<Music> {
     @Override
     protected void updateItem(Music music, boolean isEmpty) {
         super.updateItem(music, isEmpty);
-    logger.info("updateItem");
+
         if (isEmpty || music == null) {
             setGraphic(null);
 //            currentMusic = null;
@@ -79,22 +70,22 @@ public class MusicCell extends ListCell<Music> {
         titleLabel.setText(music.getTitle());
         artistLabel.setText(music.getArtist());
 
-        String imagePath = "/org/example/linktomusicbeta/images/" + music.getImagePath();
-        Image image = imageCache.get(imagePath);
+//        String imagePath = "/org/example/linktomusicbeta/images/" + music.getImagePath();
+//        Image image = imageCache.get(imagePath);
+        albumImage.setImage(music.getImagePath());
+//        if (image == null) {
+//            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+//
+//            if (imageStream != null) {
+//                Image newImage = new Image(imageStream);
+//                imageCache.put(imagePath, newImage);
+//                albumImage.setImage(newImage);
+//                albumImage.setCache(true); // 이미 로드된 이미지에 대해서만 캐시 활성화
+//                logger.info("new Music is cached");
+//            }
+//        }
 
-        if (image == null) {
-            InputStream imageStream = getClass().getResourceAsStream(imagePath);
-
-            if (imageStream != null) {
-                Image newImage = new Image(imageStream);
-                imageCache.put(imagePath, newImage);
-                albumImage.setImage(newImage);
-                albumImage.setCache(true); // 이미 로드된 이미지에 대해서만 캐시 활성화
-                logger.info("new Music is cached");
-            }
-        }
-
-        albumImage.setImage(image);  // 캐시된 이미지 설정
+//        albumImage.setImage(image);  // 캐시된 이미지 설정
         setGraphic(hbox); // 셀 UI 적용
 
 //        this.setOnMouseClicked(null);

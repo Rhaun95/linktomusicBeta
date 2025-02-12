@@ -5,7 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.linktomusicbeta.controller.ConvertController;
+import org.example.linktomusicbeta.controller.*;
 
 
 public class Main extends Application {
@@ -15,18 +15,20 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage)  {
+    public void start(Stage primaryStage)  {
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(
-                    getClass().getResource("/org/example/linktomusicbeta/fxml/convert.fxml"));
+                    getClass().getResource("/org/example/linktomusicbeta/fxml/main.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 300, 420);
-
-            ConvertController controller = fxmlLoader.getController();
-            controller.setPrimaryStage(stage);
-
-            stage.setTitle("LinkToMusic");
-            stage.setScene(scene);
-            stage.show();
+//            MainController controller = fxmlLoader.getController();
+//            ConvertController controller = fxmlLoader.getController();
+//            MyMusicController controller = fxmlLoader.getController();
+//            ChartController controller = fxmlLoader.getController();
+//            SearchController controller = fxmlLoader.getController();
+//            controller.setPrimaryStage(primaryStage);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Link To Music Beta");
+            primaryStage.show();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

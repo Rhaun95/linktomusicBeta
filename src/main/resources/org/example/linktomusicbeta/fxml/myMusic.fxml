@@ -2,10 +2,8 @@
 
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
 <VBox alignment="CENTER" prefHeight="393.0" prefWidth="298.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.example.linktomusicbeta.controller.MyMusicController">
 
-    <Button fx:id="toConvert" onAction="#changeToConvert" text="Convert" />
     <ListView fx:id="musicListView"  />
 
 </VBox>

@@ -13,12 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/*
-* TODO: 
-*  Music List -> click + -> convert and download
-*  Musicplayer?
-*  save/track Music
-* */
 public class ConvertController {
 
     private final ConvertService convertService = new ConvertService();
@@ -34,7 +28,7 @@ public class ConvertController {
     }
 
     @FXML
-    protected void handleLinkSubmit() {
+    protected void handleLinkSubmit() throws IOException, InterruptedException {
         String link = linkField.getText();
 
         if(link ==null || link.isEmpty()){
