@@ -2,12 +2,14 @@ package org.example.linktomusicbeta.model;
 
 import javafx.scene.image.Image;
 
+import java.io.File;
+
 public class Music {
 
     private String title;
     private String artist;
     private Image image;
-    private String url;
+    private String filePath;
     private String ytVideoID;
 
     public Music(Image image, String title, String artist) {
@@ -15,12 +17,12 @@ public class Music {
         this.title = title;
         this.artist = artist;
     }
-    public String getUrl() {
-        return url;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public String getArtist() {

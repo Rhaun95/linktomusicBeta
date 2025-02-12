@@ -2,9 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
-<HBox fx:controller="org.example.linktomusicbeta.controller.MusicPlayerController" spacing="20" alignment="CENTER"
-      style="-fx-background-color: #333; -fx-padding: 10px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <Button fx:id="playButton" text="▶" onAction="#playMusic"/>
-    <Button fx:id="pauseButton" text="⏸" onAction="#pauseMusic"/>
-    <Button fx:id="stopButton" text="⏹" onAction="#stopMusic"/>
+<HBox fx:id="musicPlayerContainer" fx:controller="org.example.linktomusicbeta.controller.MusicPlayerController"
+      spacing="20" alignment="CENTER" visible="false" style="-fx-background-color: #333; -fx-padding: 10px;"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+     <Button fx:id="playPauseButton" text="⏸" onAction="#togglePlayPause"/>
+     <Button fx:id="stopButton" text="⏹" onAction="#stopMusic"/>
+
 </HBox>

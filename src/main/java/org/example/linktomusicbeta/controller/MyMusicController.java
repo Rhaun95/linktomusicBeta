@@ -20,6 +20,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import org.example.linktomusicbeta.component.MyMusicCell;
 import org.example.linktomusicbeta.model.Music;
+import org.example.linktomusicbeta.service.MediaPlayerService;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
@@ -38,17 +39,14 @@ import java.util.List;
 public class MyMusicController {
 
     public static final ch.qos.logback.classic.Logger logger = (Logger) LoggerFactory.getLogger(MyMusicController.class);
-    private Stage primaryStage;
 
+    @FXML private ListView<Music>  musicListView;
+
+
+    private Stage primaryStage;
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
-    @FXML private ListView<Music>  musicListView;
-    @FXML private Button toConvert;
-    @FXML private Button playPauseButton, stopButton, closeButton;
-    @FXML private HBox musicPlayerContainer;
-    private boolean isPlaying = false;
-
 
     public void initialize() throws InvalidDataException, UnsupportedTagException, IOException {
 
@@ -61,12 +59,12 @@ public class MyMusicController {
         }
         logger.info("Music directory exists.");
 
-        File[] trackList = musicDir.listFiles((dir, name) -> name.endsWith(".mp3"));
+        File[] fileList = musicDir.listFiles((dir, name) -> name.endsWith(".mp3"));
         List<Music> musicFiles = new ArrayList<>();
 
-        if (trackList != null) {
-            for (File track : trackList) {
-                musicFiles.add(extractMetadata(track));
+        if (fileList != null) {
+            for (File musicFile : fileList) {
+                musicFiles.add(extractMetadata(musicFile));
             }
         }
 
@@ -76,9 +74,10 @@ public class MyMusicController {
 
         musicListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // 더블 클릭 감지
-                Music selectedMusic = musicListView.getSelectionModel().getSelectedItem();
+                String selectedMusic = musicListView.getSelectionModel().getSelectedItem().getFilePath();
                 if (selectedMusic != null) {
-                    openMusicPlayer(selectedMusic);
+                    MediaPlayerService.getInstance().play(selectedMusic);
+                    MusicPlayerController.getInstance().setIsPlaying(selectedMusic);
                 }
             }
         });
@@ -102,71 +101,8 @@ public class MyMusicController {
             albumImageData = new Image(new ByteArrayInputStream(imageData));
         }
         Music music = new Music(albumImageData,title, artist);
-        music.setUrl(track.toURI().toString());
+        music.setFilePath(track.toURI().toString());
         return music;
-    }
-
-    @FXML
-    public void changeToConvert() {
-        try {
-            // 새 FXML 파일을 로드
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/linktomusicbeta/fxml/convert.fxml"));
-            VBox newRoot = loader.load();
-
-            ConvertController controller= loader.getController();
-            controller.setPrimaryStage(primaryStage);
-            // 새로운 Scene을 설정
-            Scene newScene = new Scene(newRoot);
-            primaryStage.setScene(newScene);
-        } catch (IOException e) {
-            logger.info(e.getMessage());
-        }
-    }
-
-    private void openMusicPlayer(Music music) {
-
-        logger.info("selected Music: {} - {}", music.getTitle(), music.getArtist());
-
-        playMusic(music);
-
-
-    }
-
-    @FXML
-    private void togglePlayPause() {
-        if (mediaPlayer == null) return;
-
-        if (isPlaying) {
-            mediaPlayer.pause();
-            playPauseButton.setText("▶");
-        } else {
-            mediaPlayer.play();
-            playPauseButton.setText("⏸");
-        }
-        isPlaying = !isPlaying;
-    }
-
-    @FXML
-    private void stopMusic() {
-        mediaPlayer.stop();
-        musicPlayerContainer.setVisible(false);
-    }
-
-    private MediaPlayer mediaPlayer;
-
-    public void playMusic(Music music) {
-        try {
-            String mediaSource = music.getUrl();
-            Media media = new Media(mediaSource);
-            mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.play();
-            musicPlayerContainer.setVisible(true);
-            isPlaying = true;
-            logger.info("music playing");
-
-        } catch (Exception e) {
-            logger.info("music loading failed : Enter valid link");
-        }
     }
 
 }

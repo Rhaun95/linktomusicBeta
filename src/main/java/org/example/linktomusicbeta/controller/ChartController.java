@@ -106,7 +106,7 @@ public class ChartController {
                 String link = track.getString("link");
 
                 Music music = new Music(new Image(imageUrl), title, artist);
-                music.setUrl(link);
+                music.setFilePath(link);
                 Platform.runLater(()-> musicList.add(music));
             }
         return musicList;
